@@ -1,0 +1,153 @@
+### ============================================
+### HTC Manila Backend — API Tests
+### ============================================
+
+### Environment variables (change to your IP/port)
+@baseUrl = http://localhost:8080
+@locCode = EU|RU|MOW|Moscow
+@lat = 55.7558
+@lon = 37.6173
+
+### ============================================
+### 1. V1 — Legacy Format (HTC Manila Classic)
+### ============================================
+
+### 1.1. Get forecast by locCode (V1)
+GET {{baseUrl}}/widget/htc/forecast-data_v3.asp?locCode={{locCode}}
+Accept: application/xml
+
+### 1.2. Get forecast by locCode with extra parameters
+GET {{baseUrl}}/widget/htc/forecast-data_v3.asp?locCode={{locCode}}&metric=celsius
+Accept: application/xml
+
+### 1.3. Get forecast by locCode with full query params
+GET {{baseUrl}}/widget/htc/forecast-data_v3.asp?locCode={{locCode}}&metric=fahrenheit&lang=en
+Accept: application/xml
+
+### ============================================
+### 2. V3 — New Format (AccuWeather V3)
+### ============================================
+
+### 2.1. Get forecast by locCode (V3)
+GET {{baseUrl}}/widget/htc2/weather-data.asp?locCode={{locCode}}
+Accept: application/xml
+
+### 2.2. Get forecast by locCode with metric (celsius)
+GET {{baseUrl}}/widget/htc2/weather-data.asp?locCode={{locCode}}&metric=celsius
+Accept: application/xml
+
+### 2.3. Get forecast by locCode with metric (fahrenheit)
+GET {{baseUrl}}/widget/htc2/weather-data.asp?locCode={{locCode}}&metric=fahrenheit
+Accept: application/xml
+
+### 2.4. Get forecast by locCode with extra params
+GET {{baseUrl}}/widget/htc2/weather-data.asp?locCode={{locCode}}&metric=celsius&lang=en
+Accept: application/xml
+
+### ============================================
+### 3. Reverse Geocoding (city lookup by coordinates)
+### ============================================
+
+### 3.1. Find city by coordinates
+GET {{baseUrl}}/widget/htc/lat-lon-search.asp?lat={{lat}}&lon={{lon}}
+Accept: application/xml
+
+### 3.2. Find city by coordinates with extra params
+GET {{baseUrl}}/widget/htc/lat-lon-search.asp?lat={{lat}}&lon={{lon}}&lang=en
+Accept: application/xml
+
+### 3.3. Find city by coordinates (missing lat)
+GET {{baseUrl}}/widget/htc/lat-lon-search.asp?lon={{lon}}
+Accept: application/xml
+
+### 3.4. Find city by coordinates (missing lon)
+GET {{baseUrl}}/widget/htc/lat-lon-search.asp?lat={{lat}}
+Accept: application/xml
+
+### 3.5. Find city by coordinates (invalid values)
+GET {{baseUrl}}/widget/htc/lat-lon-search.asp?lat=999.999&lon=999.999
+Accept: application/xml
+
+### ============================================
+### 4. Fallback (Sniff) — everything else
+### ============================================
+
+### 4.1. Unknown path
+GET {{baseUrl}}/unknown
+Accept: text/plain
+
+### 4.2. Root path
+GET {{baseUrl}}/
+Accept: text/plain
+
+### 4.3. Unknown path with query params
+GET {{baseUrl}}/unknown?param1=value1&param2=value2
+Accept: text/plain
+
+### 4.4. POST request to unknown path
+POST {{baseUrl}}/unknown
+Content-Type: application/json
+
+{
+  "test": "data"
+}
+
+### ============================================
+### 5. Test Endpoints (for debugging)
+### ============================================
+
+### 5.1. Test V1 (if enabled)
+GET {{baseUrl}}/test-htc-v1
+Accept: application/xml
+
+### 5.2. Test V3 (if enabled)
+GET {{baseUrl}}/test-htc-v3
+Accept: application/xml
+
+### 5.3. Health check (if enabled)
+GET {{baseUrl}}/health
+Accept: application/json
+
+### ============================================
+### 6. Various Scenarios for V1
+### ============================================
+
+### 6.1. Get forecast by locCode with URL encoding
+GET {{baseUrl}}/widget/htc/forecast-data_v3.asp?locCode=EU%7CRU%7CMOW%7CMoscow
+Accept: application/xml
+
+### 6.2. Get forecast by locCode for another city
+GET {{baseUrl}}/widget/htc/forecast-data_v3.asp?locCode=EU%7CFR%7CPAR%7CParis
+Accept: application/xml
+
+### ============================================
+### 7. Various Scenarios for V3
+### ============================================
+
+### 7.1. Get forecast by locCode for another city
+GET {{baseUrl}}/widget/htc2/weather-data.asp?locCode=EU%7CFR%7CPAR%7CParis
+Accept: application/xml
+
+### 7.2. Get forecast by locCode with metric for another city
+GET {{baseUrl}}/widget/htc2/weather-data.asp?locCode=EU%7CGB%7CLON%7CLondon&metric=celsius
+Accept: application/xml
+
+### ============================================
+### 8. Edge Cases
+### ============================================
+
+### 8.1. Empty locCode (V1)
+GET {{baseUrl}}/widget/htc/forecast-data_v3.asp?locCode=
+Accept: application/xml
+
+### 8.2. Empty locCode (V3)
+GET {{baseUrl}}/widget/htc2/weather-data.asp?locCode=
+Accept: application/xml
+
+### 8.3. Missing locCode (V1)
+GET {{baseUrl}}/widget/htc/forecast-data_v3.asp
+Accept: application/xml
+
+### 8.4. Missing locCode (V3)
+GET {{baseUrl}}/widget/htc2/weather-data.asp
+Accept: application/xml

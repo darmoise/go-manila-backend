@@ -1,0 +1,33 @@
+# Binaries
+/bin/
+/dist/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Go test/build artifacts
+*.test
+*.out
+coverage.out
+
+# Local config
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# IDE/editor
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Temporary files
+/tmp/
+
+# Coding Agent
+CHATGPT.md
+CLAUDE.md
